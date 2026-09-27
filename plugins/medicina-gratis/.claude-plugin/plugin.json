@@ -1,0 +1,7 @@
+{
+  "name": "medicina-gratis",
+  "description": "Skill gratuita para estudantes e internos: OSCE Trainer, estação prática com paciente padronizado e correção por checklist.",
+  "version": "1.0.0",
+  "author": { "name": "João Victor Rachide", "url": "https://instagram.com/rachide.ai" },
+  "keywords": ["medicina","osce","internato","prova pratica"]
+}

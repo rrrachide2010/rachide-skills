@@ -1,0 +1,9 @@
+{
+  "name": "rachide-skills",
+  "owner": { "name": "João Victor Rachide", "url": "https://instagram.com/rachide.ai" },
+  "metadata": { "description": "Skills grátis de IA aplicada para medicina e vendas. Kits completos em jvrachide.vercel.app/skills", "version": "1.1.0" },
+  "plugins": [
+    { "name": "medicina-gratis", "source": "./plugins/medicina-gratis", "description": "OSCE Trainer: estação prática com paciente padronizado e correção por checklist.", "version": "1.0.0", "category": "medicina" },
+    { "name": "ia-que-vende", "source": "./plugins/ia-que-vende", "description": "Raio-X de Oferta, Espião de Concorrente e Diagnóstico de Automação.", "version": "1.0.0", "category": "marketing" }
+  ]
+}

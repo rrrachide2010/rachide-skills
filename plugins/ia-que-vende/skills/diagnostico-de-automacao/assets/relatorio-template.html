@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diagnóstico de Automação</title>
+<style>
+:root{--bg:#0b0b12;--card:#14141f;--line:#23233a;--tx:#e8e8f0;--mut:#8b8ba3;--ind:#5b5bd6;--esm:#2fbf8f;--warn:#f0a35e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,Inter,Segoe UI,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px}h1{font-size:26px;margin:0 0 4px}h2{font-size:16px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:36px 0 12px}
+.sub{color:var(--mut)}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:20px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.kpi b{display:block;font-size:26px;color:var(--esm)}.kpi span{color:var(--mut);font-size:13px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}th{color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#1d1d2e;color:var(--mut)}.tag.ia{background:var(--ind);color:#fff}.tag.alto{background:#3a1f1f;color:#f08a8a}
+.fase{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ind);border-radius:12px;padding:16px;margin-bottom:12px}.fase h3{margin:0 0 6px;font-size:16px}
+.risco{border-left-color:var(--warn)}.cta{background:linear-gradient(135deg,#1c1c33,#14141f);border:1px solid var(--ind);border-radius:14px;padding:20px;margin-top:32px}
+.cta a{display:inline-block;margin-top:10px;background:var(--ind);color:#fff;text-decoration:none;padding:10px 16px;border-radius:10px;font-weight:600}
+.foot{color:var(--mut);font-size:12px;margin-top:40px}
+</style></head><body><div class="wrap" id="app"></div>
+<script>
+const D=__DIAGNOSTICO_JSON__;
+const e=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const brl=n=>Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const t=D.tarefas||[],f=D.fases||[];
+document.getElementById("app").innerHTML=`
+<h1>Diagnóstico de Automação</h1><div class="sub">${e(D.empresa)}</div>
+<p>${e(D.resumo)}</p>
+<div class="kpis"><div class="kpi"><b>${e(D.ganho_mensal_horas)} h</b><span>horas recuperadas por mês (estimativa)</span></div>
+<div class="kpi"><b>${brl(D.ganho_mensal_reais)}</b><span>valor mensal estimado (horas x custo/hora)</span></div>
+<div class="kpi"><b>${t.length}</b><span>tarefas mapeadas</span></div></div>
+<h2>Tarefas mapeadas</h2>
+<table><tr><th>Tarefa</th><th>Freq.</th><th>Tempo/mês</th><th>Tipo</th><th>Ferramenta</th><th>Complex.</th><th>Ganho/mês</th></tr>
+${t.map(x=>`<tr><td><b>${e(x.tarefa)}</b><br><span class="sub">${e(x.dor||"")}</span></td><td>${e(x.frequencia)}</td><td>${e(x.horas_mes)} h</td><td><span class="tag ${/ia/i.test(x.tipo)?"ia":""}">${e(x.tipo)}</span></td><td>${e(x.ferramenta||"")}</td><td>${e(x.complexidade||"")}</td><td>${brl(x.ganho_reais)}</td></tr>`).join("")}</table>
+<h2>Plano por fases</h2>
+${f.map(x=>`<div class="fase"><h3>Fase ${e(x.numero)}: ${e(x.titulo)} <span class="tag">${e(x.prazo||"")}</span></h3><ul>${(x.itens||[]).map(i=>`<li>${e(i)}</li>`).join("")}</ul></div>`).join("")}
+${(D.riscos||[]).length?`<h2>Riscos e cuidados</h2>${D.riscos.map(r=>`<div class="fase risco">${e(r)}</div>`).join("")}`:""}
+<h2>Próximo passo</h2><p>${e(D.proximo_passo)}</p>
+<div class="cta"><b>Como implementar</b><p>Você pode seguir o plano por conta própria com este roteiro, ou implementar com a RVM: a gente monta, integra e treina a equipe.</p>${D.contato_rvm?`<a href="${e(D.contato_rvm)}">Falar com a RVM</a>`:""}</div>
+<div class="foot">Estimativas baseadas nas informações declaradas na entrevista. Valores em horas e reais são projeções, não garantias.</div>`;
+</script></body></html>
